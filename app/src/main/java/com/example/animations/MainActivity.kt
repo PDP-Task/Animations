@@ -1,14 +1,16 @@
 package com.example.animations
 
 import android.animation.ObjectAnimator
-import androidx.appcompat.app.AppCompatActivity
+import android.animation.ValueAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.view.animation.BounceInterpolator
 import android.widget.Button
-import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,9 +27,16 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
         imageView = findViewById(R.id.imageView)
         val btnBlink: Button = findViewById(R.id.btnBlink)
+        val btnIntent: Button = findViewById(R.id.btnIntent)
+
+        btnIntent.setOnClickListener {
+            Intent(this, SecondActivity::class.java).also {
+                startActivity(it)
+            }
+        }
 
         btnBlink.setOnClickListener {
-            objectAnimator()
+            moveAnim()
         }
     }
 
@@ -45,6 +54,21 @@ class MainActivity : AppCompatActivity() {
     private fun objectAnimator() {
         val moveAnim = ObjectAnimator.ofFloat(imageView, "rotation", 1000f)
         moveAnim.duration = 2000
+        moveAnim.start()
+    }
+
+    private fun scaleX() {
+        val scaleAnim = ObjectAnimator.ofFloat(imageView, "scaleY", 1.0f, 2.0f)
+        scaleAnim.duration = 3000
+        scaleAnim.repeatCount = ValueAnimator.INFINITE
+        scaleAnim.repeatMode = ValueAnimator.REVERSE
+        scaleAnim.start()
+    }
+
+    private fun moveAnim() {
+        val moveAnim = ObjectAnimator.ofFloat(imageView, "Y", 1000F)
+        moveAnim.duration = 2000
+        moveAnim.interpolator = BounceInterpolator()
         moveAnim.start()
     }
 }
